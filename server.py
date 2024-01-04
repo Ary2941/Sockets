@@ -6,6 +6,15 @@ address = ('localhost',2143)
 myself.bind(address)
 myself.listen()
 
+
+socket_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+socket_client.connect(address)
+
+
+
+
+
+
 print(f'{address[0]} waiting connections on {address[1]}...')
 
 conexao1, endereco_cliente1 = myself.accept()
