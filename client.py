@@ -1,33 +1,38 @@
 import socket,threading, sys
 
-cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 endereco_servidor=('localhost',2143)
-cliente.connect(endereco_servidor)
-quit_event = threading.Event()
+server.connect(endereco_servidor)
 
-def send_message(quit_event):
-    while not quit_event.is_set():
+
+def send_message():
+    while 1:
         mensagem = input("")
-        cliente.send(mensagem.encode())
-    cliente.close()
+        if mensagem == "!quit":
+            server.close()
+            sys.exit()
+        try:
+            server.send(mensagem.encode())
 
-thread1 = threading.Thread(target=send_message, args=(quit_event,))
+        except(ConnectionResetError):
+            server.close()
+            sys.exit()
+
+thread1 = threading.Thread(target=send_message, args=())
 thread1.start()
 
 
+def get_message():
+    while 1:
+        try:
+            mensagem = server.recv(2143)
+            print(f'({endereco_servidor[1]})',mensagem.decode())
+        except(ConnectionAbortedError):
+            break        
+        except ConnectionError:
+            print("servidor fechou!")
+            sys.exit()
 
-try:
-    while not quit_event.is_set():
-        mensagem = cliente.recv(2143)
-        if not mensagem:
-            print("conexão encerrada pelo server!")
-            break
-        print(f'({endereco_servidor[1]})',mensagem.decode())
-
-except ConnectionError:
-    print("Conexão perdida com o servidor!")
-    quit_event.set()
-    thread1.join()
-    cliente.close() 
-    sys.exit()
+thread2 = threading.Thread(target=get_message, args=())
+thread2.start()
