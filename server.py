@@ -1,5 +1,53 @@
 import socket, threading , sys
 
+
+
+class server:
+    def __init__(self,address):
+        self.socket  = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.address = ('localhost',int(address))
+        self.connections = []
+
+
+    def hear(self,entity,entity_name,connections_index):
+        while 1:
+            entity_response = entity.recv(self.address[1])
+
+            print(f"{entity_name} disse: {entity_response.decode()}")
+
+
+    def listen(self):
+        self.socket.bind(self.address)
+        self.socket.listen()
+        print(f'{self.address[0]} waiting connections on {self.address[1]}...')
+
+        while 1:
+            cliente, cliente_sitio = self.socket.accept()
+            
+            self.connections += [(cliente,cliente_sitio,threading.Thread(target=self.hear, args=(cliente,cliente_sitio[1],len(self.connections)-1)).start() )] #o socket, o endereço do mesmo, e uma thread que recebe as mensagens do socket
+            print(f"connection {len(self.connections)} stablished with {self.connections[len(self.connections)-1][1]}")
+
+    def broadcast(self):
+        while 1:
+            mensagem = input("")
+            if mensagem == "!quit":
+                pass
+
+            for conexao in self.connections:
+                conexao[0].send(mensagem.encode())
+
+
+    def run(self):
+        listenthread = threading.Thread(target=self.listen)
+        broadcastthread = threading.Thread(target=self.broadcast)
+
+        listenthread.start()
+        broadcastthread.start()
+
+server(2143).run()
+
+
+'''
 myself = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 address = ('localhost',2143)
 
@@ -73,3 +121,4 @@ thread3.join()
 
 
 
+'''
