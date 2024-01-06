@@ -12,13 +12,17 @@ class server:
     def transfer_message(self,entity,entity_name):
         while 1:
             input = entity.recv(self.address[1]).decode()
-            
-            entity_response = f"{entity_name} disse: {input}"
 
             channel = (input.split(" ")[0])
-            
-            if channel == '0':
-                for all_clients in self.clients.keys()-[entity_name]:
+            input = input.split(" ")[1:]
+
+            input = " ".join(input)
+
+            entity_response = f"{entity_name} disse para o canal {channel}: {input}"
+            input = f"{entity_name}: "+input
+
+            if channel == 'all':
+                 for all_clients in self.clients.keys()-[entity_name]:
                     self.clients[all_clients][0].send(input.encode())
 
             else:
