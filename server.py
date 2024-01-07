@@ -12,27 +12,30 @@ class server:
     def transfer_message(self,entity,entity_name):
         while 1:
             input = entity.recv(self.address[1]).decode()
-
             channel = (input.split(" ")[0])
             input = input.split(" ")[1:]
 
             input = " ".join(input)
 
-            entity_response = f"{entity_name} disse para o canal {channel}: {input}"
-            input = f"{entity_name}: "+input
+            entity_response = f"{entity_name} disse para {channel}: {input}"
+            
 
-            if channel == 'all':
-                 for all_clients in self.clients.keys()-[entity_name]:
+            if channel == 'todos':
+                input = f"{entity_name} disse para todos: "+input
+
+                for all_clients in self.clients.keys()-[entity_name]:
                     self.clients[all_clients][0].send(input.encode())
 
-            else:
+            elif entity_name != channel:
+                input = f"{entity_name} disse para você:: "+input 
                 self.clients[channel][0].send(input.encode())
-            
+
+            else:
+                input = f"{entity_name}: "+input
+                self.clients[channel][0].send(input.encode())
 
             print(entity_response)
             
-
-
     def listen(self):
         self.socket.bind(self.address)
         self.socket.listen()
@@ -42,6 +45,18 @@ class server:
             self.clients[str(cliente_sitio[1])] = (cliente, threading.Thread(target=self.transfer_message, args=(cliente,str(cliente_sitio[1]))).start())            
             cliente.send(f"você entrou no servidor como {cliente_sitio[1]}".encode())
             print(f"connection {len(self.clients)} stablished with {cliente_sitio[1]}")
+            
+            whoishere = "" #reciclando variável
+
+            for all_clients in self.clients.keys()-[str(cliente_sitio[1])]:
+                whoishere += ", "+ all_clients
+                self.clients[all_clients][0].send(f"{cliente_sitio[1]} entrou.".encode())
+            
+            if len(self.clients) > 1:
+                cliente.send(f"\nestão na sala:{whoishere[1:]}".encode())
+            else:
+                cliente.send(f"\nfora você, não há ninguém na sala.".encode())
+
 
     def broadcast(self):
         while 1:
