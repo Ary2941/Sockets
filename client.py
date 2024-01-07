@@ -8,16 +8,21 @@ class client:
 
     def send_message(self):
         while 1:
-            mensagem = input("")
-            if mensagem == "!quit":
-                self.socket.close()
-                sys.exit()
             try:
-                self.socket.send(mensagem.encode())
+                mensagem = input("")
+                if mensagem == "!quit":
+                    self.socket.close()
+                    sys.exit()
+                try:
+                    self.socket.send(mensagem.encode())
 
-            except(ConnectionResetError):
-                self.socket.close()
-                sys.exit()
+                except(ConnectionResetError,EOFError):
+                    self.socket.close()
+                    sys.exit()
+            except(ConnectionResetError,EOFError,KeyboardInterrupt):
+                    self.socket.close()
+                    sys.exit()
+
 
     def get_message(self):
         while 1:
