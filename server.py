@@ -1,4 +1,5 @@
 import socket, threading , sys
+print(sys.version)
 
 class server:
     def __init__(self,address):
@@ -34,13 +35,18 @@ class server:
                 elif entity_name != channel:
                     try:
                         entity_response = f"{entity_name} disse para {channel}: {input}"
-                        input = f"{entity_name} disse: "+input 
+                        input = f"{entity_name}: "+input 
                         self.clients[channel][0].send(input.encode()) #envie só pra um cliente
 
                     except(KeyError):
-                        
-                        entity_response = f'{input} para {channel} mas a mensagem foi perdida.'
-                        entity.send(f"{channel} quem?".encode()) #não envie a mensagem
+                        if channel == 'allusers':
+                            keys = "todos"
+                            for x in self.clients.keys():
+                                keys += f","+x
+                            entity.send(f"{keys}".encode())
+                        else:
+                            entity_response = f'{input} para {channel} mas a mensagem foi perdida.'
+                            entity.send(f"{channel} quem?".encode()) #não envie a mensagem
 
                 else:
                     entity_response = f'{entity_name} disse para sim mesmo: {input}.'
@@ -50,7 +56,7 @@ class server:
                 print(entity_response)
             
             except(ConnectionResetError):
-                input =f"{entity_name} saiu!!"
+                input =f"link_lost {entity_name}"
                 print (input)
                 del self.clients[entity_name]
                 self.avise_todos(input)
@@ -62,21 +68,25 @@ class server:
         self.socket.listen()
         
         while 1:
-            cliente, cliente_sitio = self.socket.accept() 
-            self.clients[str(cliente_sitio[1])] = (cliente, threading.Thread(target=self.transfer_message, args=(cliente,str(cliente_sitio[1]))).start())            
-            cliente.send(f"você entrou no servidor como {cliente_sitio[1]}".encode())
+            cliente, cliente_sitio = self.socket.accept()
+            cliente_thread = threading.Thread(target=self.transfer_message, args=(cliente,str(cliente_sitio[1]))).start()
+            self.clients[str(cliente_sitio[1])] = (cliente, )            
             print(f"connection {len(self.clients)} stablished with {cliente_sitio[1]}")
             
             whoishere = ""
 
             for all_clients in self.clients.keys()-[str(cliente_sitio[1])]:
                 whoishere += ", "+ all_clients
-                self.clients[all_clients][0].send(f"{cliente_sitio[1]} entrou.".encode())
+                self.clients[all_clients][0].send(f"link_start {cliente_sitio[1]}".encode())
+                keys = "todos"
+                for x in self.clients.keys():
+                    keys += f","+x
+                self.clients[all_clients][0].send(f"{keys}".encode())
             
-            if len(self.clients) > 1:
-                cliente.send(f"\nestão na sala:{whoishere[1:]}".encode())
-            else:
-                cliente.send(f"\nfora você, não há ninguém na sala.".encode())
+            keys = "todos"
+            for x in self.clients.keys():
+                keys += f","+x
+            cliente.send(f"{keys}".encode())
 
     def broadcast(self):
         while 1:
