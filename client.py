@@ -1,6 +1,11 @@
 import socket,threading, sys
 
-server_address=('localhost',2143)
+try:
+    server_address=('localhost',int(sys.argv[1]))
+except(IndexError):
+    print("para rodar o aquivo favor executar no formato: python client.py *coloque aqui o servidor*")
+    sys.exit()
+
 
 run_send_message = True
 run_get_message = True
