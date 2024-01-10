@@ -34,7 +34,7 @@ class client:
                                     
                 sg.Column([
                         [sg.Text("Canal atual: todos",key="CURRENTCHANNELNAME")],
-                        [sg.Listbox(self.current_channel,key='CHANNELVIEW',size=(30, 4), font=('Arial Bold', 14))]
+                        [sg.Listbox(self.channels[self.current_channel],key='CHANNELVIEW',size=(30, 4), font=('Arial Bold', 14))]
                     ])
             ], 
 
@@ -56,27 +56,6 @@ class client:
 
         while 1:
             event, values = self.view.read()
-            '''
-            try:
-                mensagem = input("")
-                if mensagem.split(" ")[0] in self.channels.keys():
-                    self.channels[mensagem.split(" ")[0]].append("eu: "+" ".join(mensagem.split(" ")[1:]))
-                
-                if mensagem == "!quit":
-                    self.socket.close()
-                    sys.exit()
-
-                try:
-                    self.socket.send(mensagem.encode())
-                    print(self.channels)
-
-                except(ConnectionResetError,EOFError):
-                    self.socket.close()
-                    sys.exit()
-            except(ConnectionResetError,EOFError,KeyboardInterrupt):
-                    self.socket.close()
-                    sys.exit()
-            '''
 
             if event == sg.WIN_CLOSED:
                 self.socket.close()
