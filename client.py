@@ -65,4 +65,5 @@ def get_message():
             pass
 
 thread2 = threading.Thread(target=get_message, args=())
+
 thread2.start()
