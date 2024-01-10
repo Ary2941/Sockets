@@ -1,23 +1,21 @@
 import threading
 import time
 
-def minha_funcao(nome):
-    for _ in range(5):
-        time.sleep(1)
-        print(f"Olá, {nome}!")
+def input_thread():
+    user_input = input("Digite algo: ")
+    # Faça algo com o input, se necessário
 
-# Criar uma thread
-thread1 = threading.Thread(target=minha_funcao, args=("Thread 1",))
+input_thread = threading.Thread(target=input_thread)
+input_thread.start()
 
-# Iniciar a thread
-thread1.start()
+time.sleep(5)
 
-# Fazer algo na thread principal
-for _ in range(5):
-    time.sleep(1)
-    print("Trabalhando na thread principal...")
+if input_thread.is_alive():
+    print("Tempo expirado. Encerrando o programa.")
+    import os
+    os._exit(0)  # Isso encerrará o programa abruptamente; use com cautela
 
-# Aguardar a thread terminar antes de encerrar o programa principal
-thread1.join()
+#Aguarda a thread encerrar (opcional)
+#input_thread.join()
 
-print("Programa encerrado.")
+print("Thread encerrada.")
