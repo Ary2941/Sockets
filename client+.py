@@ -42,6 +42,21 @@ except(ConnectionRefusedError):
 
 mensagens = []
 
+#####################################################################################################################################
+
+
+
+sg.theme(mytheme) 
+layout = [  
+            [sg.Text(f'Usuário {my_address[1]}')],
+            [sg.Listbox(mensagens, size=(30, 4), font=('Arial Bold', 14), expand_y=True,expand_x=True, key='LIST')],
+            [sg.InputText(key="MESSAGE INPUT"),sg.Button('mandar',key = "SEND")],
+            [] 
+        ]
+
+# Create the Window
+window = sg.Window('Window Title', layout)
+
 
 #####################################################################################################################################
 def send_message():
@@ -55,6 +70,10 @@ def send_message():
             mensagens.append(f"Eu: {mensagem}" ) 
             they.send(f"MESSAGE {my_address[1]}: {mensagem}".encode())
 
+            window["LIST"].update(mensagens) #interface
+            window['LIST'].Widget.yview_moveto(1)
+
+    
     except Exception as e:
         print("!quit")
         they.send("!quit".encode())
@@ -68,6 +87,9 @@ def get_message():
             if mensagem.split(" ")[0] == "MESSAGE":
                 print(" ".join(mensagem.split(" ")[1:]) )
                 mensagens.append(" ".join(mensagem.split(" ")[1:]) )
+
+                window["LIST"].update(mensagens) #interface
+                window['LIST'].Widget.yview_moveto(1)
 
             if mensagem == "!quit":
                 print("!quit")
@@ -85,3 +107,22 @@ thread2 = threading.Thread(target=get_message, args=())
 thread2.start()
 
 #####################################################################################################################################
+
+
+while True:
+    event, values = window.read()
+    
+    if event == sg.WIN_CLOSED: # if user closes window or clicks cancel
+        print("!quit")
+        they.send("!quit".encode())
+        os._exit(0)
+
+    if event == "SEND":
+        mensagem = values["MESSAGE INPUT"]
+        mensagens.append(f"Eu: {mensagem}")
+        print(f"Eu: {mensagem}")
+        they.send(f"MESSAGE {my_address[1]}: {mensagem}".encode())
+        window["LIST"].update(mensagens)
+        window["MESSAGE INPUT"].update("")
+
+        window['LIST'].Widget.yview_moveto(1)
