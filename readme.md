@@ -18,13 +18,13 @@ pip install PySimpleGUI
 ### Versão com Interface Gráfica
 
 ```bash
-python client+.py {coloque aqui o endereço do localhost}
+python client+.py {coloque aqui o endereço localhost}
 ```
 
 ### Versão de Console
 
 ```bash
-python client.py {coloque aqui o endereço do localhost}
+python client.py {coloque aqui o endereço localhost}
 ```
 
 ## Funcionalidades
