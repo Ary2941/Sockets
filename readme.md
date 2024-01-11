@@ -31,7 +31,9 @@ python client.py {coloque aqui o endereço localhost}
 
 - Ambas as versões permitem a comunicação em tempo real entre dois clientes através de sockets.
 - Na versão de console, a frase `!quit` encerra ambos os programas, na da interface o botão x encerra ambos os programas e em ambas as versões crtl+C encerra ambos os programas.
-- Para a versão com interface gráfica, basta executar o programa duas vezes para iniciar dois clientes.
+- Para a versão com interface gráfica, assim como na versão de console, basta executar o programa duas vezes para iniciar dois clientes.
+- A versão de console pode interagir com a da interface gráfica.
+
 
 ## Observações
 
