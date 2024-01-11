@@ -38,8 +38,6 @@ python client.py {coloque aqui o endereço localhost}
 - A biblioteca PySimpleGUI é opcional e pode ser instalada apenas se a versão com interface gráfica for desejada.
 - Ambas as versões do programa são equivalentes em funcionalidade, proporcionando uma experiência de chat entre dois clientes.
 
-Sinta-se à vontade para explorar e modificar o código-fonte de acordo com suas necessidades! Se houver dúvidas ou sugestões, entre em contato.
-
 ---
 
 *Este projeto foi desenvolvido por Amaury Junior.*
