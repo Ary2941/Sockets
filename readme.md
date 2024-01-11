@@ -42,4 +42,4 @@ Sinta-se à vontade para explorar e modificar o código-fonte de acordo com suas
 
 ---
 
-*Este projeto foi desenvolvido por [Seu Nome].*
+*Este projeto foi desenvolvido por Amaury Junior.*
