@@ -1,7 +1,7 @@
 import socket, threading,os
 
-class server:
-    def __init__(self,address):
+class TCPserver:
+    def __init__(self,address,TYPE="TCP"):
         self.socket  = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.address = ('localhost',int(address))
         self.clients = dict()
@@ -22,7 +22,7 @@ class server:
         while 1:
             try:
                 input = entity.recv(self.address[1]).decode()
-                print(f"they:{input}")
+                print(f"{entity_name}: {input}")
             except(ConnectionResetError):
                 os._exit(0)
 

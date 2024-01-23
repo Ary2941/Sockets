@@ -1,6 +1,6 @@
 import socket,threading, os
 
-class client:
+class TCPclient:
     def __init__(self,address):
         self.socket_name = None
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -21,6 +21,7 @@ class client:
                 self.socket.send(message)
             except:
                 os._exit(0)
+
     def run(self):
         self.connect()
         thread1 = threading.Thread(target=self.send_message, args=())
