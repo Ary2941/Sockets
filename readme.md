@@ -18,7 +18,7 @@ ou
 python quimera.py TCP
 ```
 
-- para mandar mensagens basta escrever no terminal, após definir as portas dos dois clientes 
+- para mandar mensagens basta escrever no terminal, após definir as portas *dos dois clientes*
 
 ## Funcionalidades
 - Ambas as versões permitem a comunicação em tempo real entre dois clientes através de sockets.
