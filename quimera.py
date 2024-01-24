@@ -10,8 +10,8 @@ print(f"protocolo usado: {type}")
 
 
 
-serveraddress = input("my address: ")
-clientaddress = input("their address: ")
+serveraddress = input("minha porta: ")
+clientaddress = input("porta do amigo: ")
 
 if type == "TCP":
     ServidorTCP.TCPserver(serveraddress).run()
