@@ -19,6 +19,7 @@ python quimera.py TCP
 ```
 
 - para mandar mensagens basta escrever no terminal, após definir as portas *dos dois clientes*
+- exemplo: minha porta: 1010, porta do amigo 1011 se comunicando com 1011 com porta do amigo 1010
 
 ## Funcionalidades
 - Ambas as versões permitem a comunicação em tempo real entre dois clientes através de sockets.
