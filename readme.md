@@ -31,4 +31,4 @@ python quimera.py TCP
 - É necessário esclarescer se vai ser executado em UDP ou TCP
 ---
 
-*Este projeto foi desenvolvido por Amaury Junior.*
+*Este projeto foi desenvolvido por Amaury Junior.
